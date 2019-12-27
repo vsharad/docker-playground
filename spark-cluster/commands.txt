@@ -1,0 +1,22 @@
+docker run --rm -it $MYNAME/spark:latest /bin/sh
+
+--ip `17` --port 7077 --webui-port 8080
+
+docker run -it --name spark-master --hostname spark-master \
+    -p 7077:7077 -p 8080:8080 --network spark_network \
+    spark:latest  /bin/sh
+    
+    /spark/sbin/start-master.sh/
+
+
+docker run -it --name spark-worker --hostname spark-worker \
+    --network spark_network \
+    spark:latest /bin/sh
+
+/spark/bin/spark-class org.apache.spark.deploy.worker.Worker \
+    --webui-port 8080 spark://spark-master:7077
+    
+docker run --rm -it --network spark_network spark:latest /bin/sh
+
+
+/spark/bin/spark-submit --master spark://spark-master:7077 --class org.apache.spark.examples.SparkPi /spark/examples/jars/spark-examples_2.11-2.4.4.jar 1000
