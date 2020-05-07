@@ -1,0 +1,1 @@
+docker exec -it sql-server-db /opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P Pass10n#
